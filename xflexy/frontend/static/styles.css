@@ -102,6 +102,7 @@ input:focus, select:focus { border-color: var(--brand); box-shadow: 0 0 0 4px rg
 .notice { margin-top: 12px; min-height: 24px; color: var(--muted); font-weight: 700; }
 .notice.error { color: var(--danger); }
 .modal { position: fixed; inset: 0; background: rgba(3,10,14,.58); display: grid; place-items: center; padding: 16px; }
+.modal[hidden] { display: none; }
 .modal-card { width: min(430px, 100%); background: var(--surface); border-radius: 8px; padding: 24px; box-shadow: var(--shadow); text-align: center; }
 .success-ring { width: 64px; height: 64px; display: grid; place-items: center; margin: 0 auto 10px; border-radius: 50%; background: rgba(30,159,102,.15); color: var(--success); font-size: 2rem; }
 dl div { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding: 12px 0; gap: 10px; }
