@@ -1,9 +1,11 @@
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncIterator
 
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from xflexy.admin.routes import router as admin_router
 from xflexy.backend.dependencies import get_order_service, get_request_repository, get_user_service
@@ -28,6 +30,7 @@ from xflexy.services.order_service import OrderService
 from xflexy.services.user_service import UserService
 
 logger = logging.getLogger(__name__)
+STATIC_DIR = Path(__file__).resolve().parents[1] / "frontend" / "static"
 
 
 @asynccontextmanager
@@ -47,6 +50,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="xflexy API", version="0.2.0", lifespan=lifespan)
 app.include_router(admin_router)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/health")
@@ -54,55 +58,14 @@ def health() -> dict[str, str]:
     return {"status": "ok", "service": "xflexy"}
 
 
-@app.get("/", response_class=HTMLResponse, include_in_schema=False)
-def demo_home() -> str:
-    return """
-    <!doctype html>
-    <html lang="en">
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>xflexy Demo</title>
-        <style>
-          body { margin: 0; font-family: Arial, sans-serif; background: #f6f7f9; color: #16202a; }
-          main { max-width: 920px; margin: 0 auto; padding: 40px 20px; }
-          h1 { margin: 0 0 8px; font-size: 36px; }
-          p { line-height: 1.6; }
-          .panel { background: white; border: 1px solid #d9dee5; border-radius: 8px; padding: 20px; margin: 18px 0; }
-          .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-          .step { border-left: 4px solid #2563eb; padding: 10px 12px; background: #f9fbff; }
-          code { background: #eef1f5; padding: 2px 5px; border-radius: 4px; }
-          a { color: #1d4ed8; font-weight: 700; }
-        </style>
-      </head>
-      <body>
-        <main>
-          <h1>xflexy Demo</h1>
-          <p>Safe public demo for the mock Flexy order workflow. No real payments, no real Flexy provider, no SIM integration, and no real Telegram token are connected.</p>
-          <section class="panel">
-            <h2>Demo Flow</h2>
-            <div class="grid">
-              <div class="step">1. Register a Telegram demo user</div>
-              <div class="step">2. Create a mock Flexy order</div>
-              <div class="step">3. Show <code>awaiting_payment</code></div>
-              <div class="step">4. Confirm mock payment with protected admin key</div>
-              <div class="step">5. Execute Mock Flexy</div>
-              <div class="step">6. Reach <code>completed</code> with a fake reference</div>
-            </div>
-          </section>
-          <section class="panel">
-            <h2>Open The API Demo</h2>
-            <p><a href="/docs">Swagger UI</a> lets you run the public demo endpoints. Admin/internal endpoints require the demo admin key and do not expose it in the page.</p>
-            <p>Health check: <a href="/health"><code>/health</code></a></p>
-          </section>
-          <section class="panel">
-            <h2>Safety Boundary</h2>
-            <p>This is a presentation build only. Everything involving money, Flexy execution, Telegram live updates, and operator integration remains mocked.</p>
-          </section>
-        </main>
-      </body>
-    </html>
-    """
+@app.get("/", include_in_schema=False)
+def demo_home() -> FileResponse:
+    return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/admin-ui", include_in_schema=False)
+def admin_ui() -> FileResponse:
+    return FileResponse(STATIC_DIR / "admin.html")
 
 
 @app.post("/users/register", response_model=UserResponse)
