@@ -6,6 +6,7 @@ const phone = document.querySelector("#phone");
 const summary = document.querySelector("#summary");
 const notice = document.querySelector("#notice");
 const modal = document.querySelector("#successModal");
+const closeModalButton = document.querySelector("#closeModal");
 let selectedOperator = "Mobilis";
 
 function setTheme(mode) {
@@ -18,7 +19,19 @@ function refreshSummary() {
   summary.textContent = `${selectedOperator} · ${Number(amount.value).toLocaleString("fr-DZ")} دج`;
 }
 
+function openSuccessModal() {
+  modal.hidden = false;
+  modal.setAttribute("aria-hidden", "false");
+  closeModalButton?.focus();
+}
+
+function closeSuccessModal() {
+  modal.hidden = true;
+  modal.setAttribute("aria-hidden", "true");
+}
+
 setTheme(localStorage.getItem("xflexy-theme") || "light");
+closeSuccessModal();
 themeToggle?.addEventListener("click", () => setTheme(root.classList.contains("dark") ? "light" : "dark"));
 operators.forEach((button) => {
   button.addEventListener("click", () => {
@@ -50,7 +63,7 @@ document.querySelector("#chargeForm").addEventListener("submit", async (event) =
     const order = await response.json();
     if (!response.ok) throw new Error(order.detail || "تعذر إنشاء الطلب");
     document.querySelector("#orderId").textContent = order.order_id;
-    modal.hidden = false;
+    openSuccessModal();
     notice.textContent = "تم إنشاء طلب الشحن التجريبي بنجاح.";
   } catch (error) {
     notice.className = "notice error";
@@ -58,6 +71,10 @@ document.querySelector("#chargeForm").addEventListener("submit", async (event) =
   }
 });
 
-document.querySelector("#closeModal").addEventListener("click", () => {
-  modal.hidden = true;
+closeModalButton?.addEventListener("click", closeSuccessModal);
+modal?.addEventListener("click", (event) => {
+  if (event.target === modal) closeSuccessModal();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !modal.hidden) closeSuccessModal();
 });
