@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: xflexy-demo
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn xflexy.backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.5
+      - key: ENVIRONMENT
+        value: demo
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DATABASE_URL
+        value: sqlite:///./xflexy.db
+      - key: FLEXY_PROVIDER
+        value: mock
+      - key: MOCK_FLEXY_MODE
+        value: success
+      - key: MIN_FLEXY_AMOUNT
+        value: 50
+      - key: MAX_FLEXY_AMOUNT
+        value: 50000
+      - key: PHONE_REGEX
+        value: ^\+?[0-9]{8,15}$
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
