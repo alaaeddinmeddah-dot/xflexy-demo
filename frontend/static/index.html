@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xflexy | شحن رصيد احترافي</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Xflexy">
+          <span class="brand-mark">X</span>
+          <span><strong>Xflexy</strong><small>Recharge OS</small></span>
+        </a>
+        <nav class="top-actions" aria-label="روابط سريعة">
+          <a href="/docs">API</a>
+          <a href="/health">Health</a>
+          <button class="icon-button" id="themeToggle" type="button" aria-label="تبديل الوضع">☾</button>
+        </nav>
+      </header>
+
+      <main class="customer-grid">
+        <section class="hero-panel">
+          <div class="eyebrow">Mock Flexy Mode آمن للعرض</div>
+          <h1>شحن رصيد الهاتف بواجهة سريعة، واضحة، ومهيأة لزبون حقيقي.</h1>
+          <p>اختيار المتعامل، إدخال الرقم، مراجعة الملخص، ثم إنشاء طلب شحن تجريبي بدون أي ربط مالي أو Flexy حقيقي.</p>
+          <div class="trust-row">
+            <span>تشغيل سريع</span>
+            <span>حالات واضحة</span>
+            <span>واجهة RTL</span>
+          </div>
+        </section>
+
+        <section class="charge-card" aria-label="نموذج الشحن">
+          <div class="section-title">
+            <span>طلب شحن جديد</span>
+            <small>دج DZD</small>
+          </div>
+
+          <div class="operator-grid" id="operators">
+            <button class="operator active mobilis" type="button" data-operator="Mobilis">
+              <strong>M</strong><span>Mobilis</span>
+            </button>
+            <button class="operator djezzy" type="button" data-operator="Djezzy">
+              <strong>D</strong><span>Djezzy</span>
+            </button>
+            <button class="operator ooredoo" type="button" data-operator="Ooredoo">
+              <strong>O</strong><span>Ooredoo</span>
+            </button>
+          </div>
+
+          <form id="chargeForm" class="form-stack">
+            <label>
+              رقم الهاتف
+              <input id="phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="0555123456" required>
+            </label>
+            <label>
+              المبلغ
+              <select id="amount" name="amount">
+                <option value="200">200 دج</option>
+                <option value="500" selected>500 دج</option>
+                <option value="1000">1,000 دج</option>
+                <option value="2000">2,000 دج</option>
+                <option value="5000">5,000 دج</option>
+              </select>
+            </label>
+            <div class="summary-box">
+              <span>ملخص الطلب</span>
+              <strong id="summary">Mobilis · 500 دج</strong>
+            </div>
+            <button class="primary-button" type="submit">تأكيد الشحن التجريبي</button>
+          </form>
+          <div class="notice" id="notice" role="status"></div>
+        </section>
+
+        <section class="status-strip" aria-label="حالات الطلبات">
+          <article class="status-card awaiting_payment"><span>◷</span><strong>awaiting_payment</strong><small>بانتظار تأكيد الدفع</small></article>
+          <article class="status-card pending"><span>↻</span><strong>pending</strong><small>قيد المعالجة</small></article>
+          <article class="status-card completed"><span>✓</span><strong>completed</strong><small>تم الشحن بنجاح</small></article>
+          <article class="status-card failed"><span>!</span><strong>failed</strong><small>فشلت العملية</small></article>
+        </section>
+      </main>
+
+      <div class="modal" id="successModal" hidden>
+        <div class="modal-card">
+          <span class="success-ring">✓</span>
+          <h2>تم إنشاء الطلب بنجاح</h2>
+          <p>الطلب الآن في حالة انتظار الدفع التجريبي.</p>
+          <dl>
+            <div><dt>رقم العملية</dt><dd id="orderId">-</dd></div>
+            <div><dt>الحالة</dt><dd><span class="pill awaiting_payment">awaiting_payment</span></dd></div>
+          </dl>
+          <button class="primary-button" id="closeModal" type="button">إغلاق</button>
+        </div>
+      </div>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xflexy | لوحة الإدارة</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="app-shell admin-shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark">X</span><span><strong>Xflexy</strong><small>Admin Console</small></span></a>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="تبديل الوضع">☾</button>
+      </header>
+      <main>
+        <section class="admin-hero">
+          <div>
+            <div class="eyebrow">Protected Dashboard</div>
+            <h1>مراقبة العمليات، الشرائح، والتقارير من واجهة واحدة.</h1>
+          </div>
+          <form id="adminKeyForm" class="admin-key">
+            <input id="adminKey" type="password" placeholder="x-admin-api-key" autocomplete="current-password" required>
+            <button class="primary-button" type="submit">تحميل البيانات</button>
+          </form>
+        </section>
+
+        <section class="metric-grid" id="metrics"></section>
+        <section class="dashboard-grid">
+          <article class="panel wide">
+            <div class="section-title"><span>سجل العمليات</span><small id="tableCount">0 عملية</small></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>العملية</th><th>الهاتف</th><th>المبلغ</th><th>الحالة</th><th>التاريخ</th></tr></thead>
+                <tbody id="ordersTable"></tbody>
+              </table>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="section-title"><span>حالة الشرائح SIM</span><small>Demo</small></div>
+            <div class="sim-list" id="simList"></div>
+          </article>
+          <article class="panel">
+            <div class="section-title"><span>التقارير والإحصائيات</span><small>ملخص سريع</small></div>
+            <div class="report-bars" id="reportBars"></div>
+          </article>
+        </section>
+        <div class="notice" id="adminNotice" role="status"></div>
+      </main>
+    </div>
+    <script src="/static/admin.js"></script>
+  </body>
+</html>
